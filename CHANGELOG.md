@@ -1,6 +1,11 @@
 Changelog
 =========
 
+master
+----------
+
+Added option ```multidateRemoveDuplicate``` to allow keeping a selected date if it is selected again. Default is ```true``` to not change the default behavior.
+
 1.3.0.2
 ----------
 

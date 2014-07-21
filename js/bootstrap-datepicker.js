@@ -1019,7 +1019,9 @@
 				this.dates.clear();
 			}
 			else if (ix !== -1){
-				this.dates.remove(ix);
+				if(this.o.multidateRemoveDuplicate) {
+					this.dates.remove(ix);
+				}
 			}
 			else {
 				this.dates.push(date);
@@ -1402,6 +1404,7 @@
 		language: 'en',
 		minViewMode: 0,
 		multidate: false,
+		multidateRemoveDuplicate: true,
 		multidateSeparator: ',',
 		orientation: "auto",
 		rtl: false,
