@@ -1,11 +1,16 @@
 # bootstrap-datepicker
 
-This is a fork of Stefan Petre's [original code](http://www.eyecon.ro/bootstrap-datepicker/);
+This is a fork of Andrew Rowls' [code](https://github.com/eternicode/bootstrap-datepicker) which is a fork of Stefan Petre's [original code](http://www.eyecon.ro/bootstrap-datepicker/);
 thanks go to him for getting this thing started!
 
 Please note that this fork is not used on Stefan's page, nor is it maintained or contributed to by him.
 
 Versions are incremented according to [semver](http://semver.org/).
+
+## Installation
+
+**Note:** this does not specify bootstrap as a dependency even though it does depend on it. This is to allow the sass version to be used instead of the less version of bootstrap.
+
 
 ## Links
 
