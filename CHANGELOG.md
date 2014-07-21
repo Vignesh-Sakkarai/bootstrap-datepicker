@@ -1,6 +1,11 @@
 Changelog
 =========
 
+master
+----------
+
+Fixed position of the calendar when first opened.
+
 1.3.0-3
 ----------
 
