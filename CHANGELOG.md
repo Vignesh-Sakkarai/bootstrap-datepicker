@@ -1,17 +1,17 @@
 Changelog
 =========
 
-1.3.0.3
+1.3.0-3
 ----------
 
 Added option ```multidateRemoveDuplicate``` to allow keeping a selected date if it is selected again. Default is ```true``` to not change the default behavior.
 
-1.3.0.2
+1.3.0-2
 ----------
 
 Fixed z-index when inside of a modal window or any other container with a z-index.
 
-1.3.0.1
+1.3.0-1
 ----------
 
 Removed dependency on bootstrap to allow using sass or less versions of it.
