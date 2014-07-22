@@ -5,6 +5,7 @@ master
 ----------
 
 * Fixed colspan for clear button when ```calendarWeeks``` is ```true```.
+* Fixed validation for xhtml by using numeric entities instead of the named ones.
 
 1.3.0-7
 ----------
