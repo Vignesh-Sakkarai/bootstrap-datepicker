@@ -1,7 +1,7 @@
 Changelog
 =========
 
-master
+1.3.0-5
 ----------
 
 * Added ```bs.datepicker``` namespace to all of the events.
