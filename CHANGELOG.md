@@ -1,7 +1,7 @@
 Changelog
 =========
 
-master
+1.3.0-8
 ----------
 
 * Fixed colspan for clear button when ```calendarWeeks``` is ```true```.
