@@ -11,6 +11,15 @@ Versions are incremented according to [semver](http://semver.org/).
 
 **Note:** this does not specify bootstrap as a dependency even though it does depend on it. This is to allow the sass version to be used instead of the less version of bootstrap.
 
+## Events
+
+* show.bs.datepicker
+* hide.bs.datepicker
+* change.bs.datepicker
+* changeDate.bs.datepicker
+* clearDate.bs.datepicker
+* changeMonth.bs.datepicker
+* changeYear.bs.datepicker
 
 ## Links
 
