@@ -1,7 +1,7 @@
 Changelog
 =========
 
-master
+1.3.0-6
 ----------
 
 * Fixed ```changeDate``` to be called after the input is cleared when clicking on the ```Clear``` button.
