@@ -939,15 +939,17 @@
 								this._setDate(date, which);
 								break;
 							case 'clear':
-								this.update();
-								this._trigger('changeDate');
 								var element;
 								if (this.isInput)
 									element = this.element;
 								else if (this.component)
 									element = this.element.find('input');
 								if (element)
-									element.val("").trigger('change.bs.datepicker');
+									element.val("");
+								this.update();
+								this._trigger('changeDate');
+								if (element)
+									element.trigger('change.bs.datepicker');
 								if (this.o.autoclose)
 									this.hide();
 								break;
