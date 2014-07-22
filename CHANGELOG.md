@@ -5,6 +5,7 @@ master
 ----------
 
 * Added ```bs.datepicker``` namespace to all of the events.
+* Fixed multiple event calls to ```change``` when it should be once.
 
 1.3.0-4
 ----------
