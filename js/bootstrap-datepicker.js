@@ -1015,21 +1015,19 @@
 		},
 
 		_toggle_multidate: function(date){
-			var ix = this.dates.contains(date);
 			if (!date){
 				this.dates.clear();
+				return;
 			}
-			else if (ix !== -1){
-				if(this.o.multidateRemoveDuplicate) {
-					this.dates.remove(ix);
-				}
+			// remove to prevent duplicates
+			var ix = this.dates.contains(date);
+			if (ix !== -1){ // found
+				this.dates.remove(ix);
 			}
-			else {
-				this.dates.push(date);
+			this.dates.push(date);
+			while (this.dates.length > this.o.multidate){
+				this.dates.shift();
 			}
-			if (typeof this.o.multidate === 'number')
-				while (this.dates.length > this.o.multidate)
-					this.dates.remove(0);
 		},
 
 		_setDate: function(date, which){
@@ -1405,7 +1403,6 @@
 		language: 'en',
 		minViewMode: 0,
 		multidate: false,
-		multidateRemoveDuplicate: true,
 		multidateSeparator: ',',
 		orientation: "auto",
 		rtl: false,

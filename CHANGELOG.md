@@ -6,6 +6,11 @@ master
 
 * Added ```bs.datepicker``` namespace to all of the events.
 * Fixed multiple event calls to ```change``` when it should be once.
+* Removed ```multidateRemoveDuplicate``` option because it is confusing when dealing when ```multidate``` is greater than 1.
+* Changed ```_toggle_multidate``` logic to:
+ 1. remove the date if it is a duplicate.
+ 2. add the date to the end of the array of dates.
+ 3. remove from the beginning of the list while the length of the dates is greater than the ```multidate```
 
 1.3.0-4
 ----------
