@@ -389,6 +389,7 @@
 
 			this.element.trigger({
 				type: event,
+				namespace: 'bs.datepicker',
 				date: local_date,
 				dates: $.map(this.dates, this._utc_to_local),
 				format: $.proxy(function(ix, format){
@@ -938,15 +939,15 @@
 								this._setDate(date, which);
 								break;
 							case 'clear':
+								this.update();
+								this._trigger('changeDate');
 								var element;
 								if (this.isInput)
 									element = this.element;
 								else if (this.component)
 									element = this.element.find('input');
 								if (element)
-									element.val("").change();
-								this.update();
-								this._trigger('changeDate');
+									element.val("").trigger('change.bs.datepicker');
 								if (this.o.autoclose)
 									this.hide();
 								break;
@@ -1048,7 +1049,7 @@
 				element = this.element.find('input');
 			}
 			if (element){
-				element.change();
+				element.trigger('change.bs.datepicker');
 			}
 			if (this.o.autoclose && (!which || which === 'date')){
 				this.hide();
@@ -1227,7 +1228,7 @@
 					element = this.element.find('input');
 				}
 				if (element){
-					element.change();
+					element.trigger('change.bs.datepicker');
 				}
 			}
 		},
