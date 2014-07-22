@@ -1,6 +1,11 @@
 Changelog
 =========
 
+master
+----------
+
+* Added ```clearDates``` so it can be called outside of the clear button.
+
 1.3.0-6
 ----------
 

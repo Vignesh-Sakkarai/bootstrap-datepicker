@@ -481,6 +481,23 @@
 			return new Date(this.dates.get(-1));
 		},
 
+		clearDates: function(){
+			var element;
+			if (this.isInput){
+				element = this.element;
+			} else if (this.component){
+				element = this.element.find('input');
+			}
+			if (element){
+				element.val("");
+			}
+			this.update();
+			this._trigger('changeDate');
+			if (element){
+				element.trigger('change.bs.datepicker');
+			}
+		},
+
 		setDates: function(){
 			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
 			this.update.apply(this, args);
@@ -939,17 +956,7 @@
 								this._setDate(date, which);
 								break;
 							case 'clear':
-								var element;
-								if (this.isInput)
-									element = this.element;
-								else if (this.component)
-									element = this.element.find('input');
-								if (element)
-									element.val("");
-								this.update();
-								this._trigger('changeDate');
-								if (element)
-									element.trigger('change.bs.datepicker');
+								this.clearDates();
 								if (this.o.autoclose)
 									this.hide();
 								break;
