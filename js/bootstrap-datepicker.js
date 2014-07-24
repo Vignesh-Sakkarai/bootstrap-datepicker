@@ -510,6 +510,7 @@
 			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
 			this.update.apply(this, $.map(args, this._utc_to_local));
 			this._trigger('changeDate');
+			this._trigger('change');
 			this.setValue();
 		},
 
