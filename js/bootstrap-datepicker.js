@@ -502,6 +502,7 @@
 			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
 			this.update.apply(this, args);
 			this._trigger('changeDate');
+			this._trigger('change');
 			this.setValue();
 		},
 
