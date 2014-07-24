@@ -1034,8 +1034,10 @@
 				this.dates.remove(ix);
 			}
 			this.dates.push(date);
-			while (this.dates.length > this.o.multidate){
-				this.dates.shift();
+			if (typeof this.o.multidate === 'number') {
+				while (this.dates.length > this.o.multidate){
+					this.dates.shift();
+				}
 			}
 		},
 
