@@ -1,7 +1,7 @@
 Changelog
 =========
 
-master
+1.3.0-9
 ----------
 
 * Fixed behavior of _toggle_multidate to work as expected when ```multidate``` is ```true``` by removing duplicate dates.
