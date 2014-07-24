@@ -1032,8 +1032,12 @@
 			var ix = this.dates.contains(date);
 			if (ix !== -1){ // found
 				this.dates.remove(ix);
+				if (this.o.multidate !== true) {
+					this.dates.push(date);
+				}
+			} else {
+				this.dates.push(date);
 			}
-			this.dates.push(date);
 			if (typeof this.o.multidate === 'number') {
 				while (this.dates.length > this.o.multidate){
 					this.dates.shift();

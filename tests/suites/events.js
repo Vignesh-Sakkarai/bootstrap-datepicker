@@ -253,14 +253,12 @@ test('Clear button: triggers change and changeDate events', function(){
         triggered_change = 0,
         triggered_changeDate = 0;
 
-    this.input.on({
-        changeDate: function(){
+    this.input
+        .on('changeDate', function() {
             triggered_changeDate++;
-        },
-        change: function(){
+        }).on('change.bs.datepicker', function() {
             triggered_change++;
-        }
-    });
+        });
 
     this.input.focus();
     ok(this.picker.find('.datepicker-days').is(':visible'), 'Days view visible');
@@ -287,20 +285,18 @@ test('setDate: triggers change and changeDate events', function(){
         triggered_change = 0,
         triggered_changeDate = 0;
 
-    this.input.on({
-        changeDate: function(){
+    this.input
+        .on('changeDate', function(e) {
             triggered_changeDate++;
-        },
-        change: function(){
+        }).on('change.bs.datepicker', function(e) {
             triggered_change++;
-        }
-    });
+        });
 
     this.input.focus();
     ok(this.picker.find('.datepicker-days').is(':visible'), 'Days view visible');
 
     this.dp.setDate(new Date(2011, 2, 5));
 
-    equal(triggered_change, 2);
+    equal(triggered_change, 1);
     equal(triggered_changeDate, 1);
 });
