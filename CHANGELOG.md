@@ -4,7 +4,7 @@ Changelog
 1.3.0-9
 ----------
 
-* Fixed behavior of _toggle_multidate to work as expected when ```multidate``` is ```true``` by removing duplicate dates.
+* Fixed behavior of ```_toggle_multidate``` to work as expected when ```multidate``` is ```true``` by removing duplicate dates.
 * Fixed ```setDates``` to trigger ```change``` event.
 * Fixed ```setUTCDates``` to trigger ```change``` event.
 
