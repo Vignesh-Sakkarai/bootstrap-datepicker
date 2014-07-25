@@ -1,7 +1,7 @@
 Changelog
 =========
 
-master
+1.3.0-11
 ----------
 
 * Fixed orientation for datepicker when it is set to auto.
