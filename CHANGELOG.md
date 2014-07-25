@@ -5,6 +5,7 @@ master
 ----------
 
 * Fixed orientation for datepicker when it is set to auto.
+* Fixed scrolling in a mobile device.
 
 1.3.0-10
 ----------
