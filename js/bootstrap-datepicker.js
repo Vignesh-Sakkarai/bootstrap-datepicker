@@ -571,11 +571,11 @@
 					return parseInt($(this).css('z-index')) || 0;
 				});
 			var zIndex = Math.max.apply(Math, Array.prototype.slice.apply(parentZIndexes)) + 10;
-			var offset = this.component ? this.component.parent().position() : this.element.offset();
+			var offset = this.component ? this.component.parent().offset() : this.element.offset();
 			var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(false);
 			var width = this.component ? this.component.outerWidth(true) : this.element.outerWidth(false);
-			var left = offset.left,
-				top = offset.top;
+			var left = this.component ? this.component.parent().position().left : offset.left;
+			var top = this.component ? this.component.parent().position().top : offset.top;
 
 			this.picker.removeClass(
 				'datepicker-orient-top datepicker-orient-bottom '+
