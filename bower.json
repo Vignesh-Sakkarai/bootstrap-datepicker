@@ -1,6 +1,6 @@
 {
   "name": "bootstrap-datepicker-vizjerai",
-  "version": "1.3.0-9",
+  "version": "1.3.0-10",
   "main": [
     "js/bootstrap-datepicker.js",
     "css/datepicker.css",
