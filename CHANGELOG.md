@@ -1,6 +1,11 @@
 Changelog
 =========
 
+master
+----------
+
+* Fixed scrolling when datepicker is open and in a modal container.
+
 1.3.0-9
 ----------
 
