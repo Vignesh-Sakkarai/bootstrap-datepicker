@@ -63,7 +63,7 @@
 				this.push.apply(this, new_array);
 			},
 			clear: function(){
-				this.splice(0);
+				this.length = 0;
 			},
 			copy: function(){
 				var a = new DateArray();
@@ -116,7 +116,7 @@
 		this.viewMode = this.o.startView;
 
 		if (this.o.calendarWeeks)
-			this.picker.find('tfoot th.today')
+			this.picker.find('tfoot th.today, tfoot th.clear')
 						.attr('colspan', function(i, val){
 							return parseInt(val) + 1;
 						});
@@ -355,7 +355,7 @@
 					resize: $.proxy(this.place, this)
 				}],
 				[$(document), {
-					'mousedown touchstart': $.proxy(function(e){
+					'mousedown touchend': $.proxy(function(e){
 						// Clicked outside the datepicker, hide it
 						if (!(
 							this.element.is(e.target) ||
@@ -389,6 +389,7 @@
 
 			this.element.trigger({
 				type: event,
+				namespace: 'bs.datepicker',
 				date: local_date,
 				dates: $.map(this.dates, this._utc_to_local),
 				format: $.proxy(function(ix, format){
@@ -409,9 +410,9 @@
 
 		show: function(){
 			if (!this.isInline)
-				this.picker.appendTo('body');
-			this.picker.show();
+				this.element.after(this.picker);
 			this.place();
+			this.picker.show();
 			this._attachSecondaryEvents();
 			this._trigger('show');
 		},
@@ -480,10 +481,28 @@
 			return new Date(this.dates.get(-1));
 		},
 
+		clearDates: function(){
+			var element;
+			if (this.isInput){
+				element = this.element;
+			} else if (this.component){
+				element = this.element.find('input');
+			}
+			if (element){
+				element.val("");
+			}
+			this.update();
+			this._trigger('changeDate');
+			if (element){
+				element.trigger('change.bs.datepicker');
+			}
+		},
+
 		setDates: function(){
 			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
 			this.update.apply(this, args);
 			this._trigger('changeDate');
+			this._trigger('change');
 			this.setValue();
 		},
 
@@ -491,6 +510,7 @@
 			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
 			this.update.apply(this, $.map(args, this._utc_to_local));
 			this._trigger('changeDate');
+			this._trigger('change');
 			this.setValue();
 		},
 
@@ -501,11 +521,11 @@
 			var formatted = this.getFormattedDate();
 			if (!this.isInput){
 				if (this.component){
-					this.element.find('input').val(formatted).change();
+					this.element.find('input').val(formatted);
 				}
 			}
 			else {
-				this.element.val(formatted).change();
+				this.element.val(formatted);
 			}
 		},
 
@@ -547,14 +567,15 @@
 				windowHeight = $window.height(),
 				scrollTop = $window.scrollTop();
 
-			var zIndex = parseInt(this.element.parents().filter(function(){
-					return $(this).css('z-index') !== 'auto';
-				}).first().css('z-index'))+10;
+			var parentZIndexes = this.element.parents().map(function() {
+					return parseInt($(this).css('z-index')) || 0;
+				});
+			var zIndex = Math.max.apply(Math, Array.prototype.slice.apply(parentZIndexes)) + 10;
 			var offset = this.component ? this.component.parent().offset() : this.element.offset();
 			var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(false);
 			var width = this.component ? this.component.outerWidth(true) : this.element.outerWidth(false);
-			var left = offset.left,
-				top = offset.top;
+			var left = this.component ? this.component.parent().position().left : offset.left;
+			var top = this.component ? this.component.parent().position().top : offset.top;
 
 			this.picker.removeClass(
 				'datepicker-orient-top datepicker-orient-bottom '+
@@ -667,7 +688,7 @@
 			var dowCnt = this.o.weekStart,
 				html = '<tr>';
 			if (this.o.calendarWeeks){
-				var cell = '<th class="cw">&nbsp;</th>';
+				var cell = '<th class="cw">&#160;</th>';
 				html += cell;
 				this.picker.find('.datepicker-days thead tr:first-child').prepend(cell);
 			}
@@ -937,15 +958,7 @@
 								this._setDate(date, which);
 								break;
 							case 'clear':
-								var element;
-								if (this.isInput)
-									element = this.element;
-								else if (this.component)
-									element = this.element.find('input');
-								if (element)
-									element.val("").change();
-								this.update();
-								this._trigger('changeDate');
+								this.clearDates();
 								if (this.o.autoclose)
 									this.hide();
 								break;
@@ -1013,19 +1026,25 @@
 		},
 
 		_toggle_multidate: function(date){
-			var ix = this.dates.contains(date);
 			if (!date){
 				this.dates.clear();
+				return;
 			}
-			else if (ix !== -1){
+			// remove to prevent duplicates
+			var ix = this.dates.contains(date);
+			if (ix !== -1){ // found
 				this.dates.remove(ix);
-			}
-			else {
+				if (this.o.multidate !== true) {
+					this.dates.push(date);
+				}
+			} else {
 				this.dates.push(date);
 			}
-			if (typeof this.o.multidate === 'number')
-				while (this.dates.length > this.o.multidate)
-					this.dates.remove(0);
+			if (typeof this.o.multidate === 'number') {
+				while (this.dates.length > this.o.multidate){
+					this.dates.shift();
+				}
+			}
 		},
 
 		_setDate: function(date, which){
@@ -1045,7 +1064,7 @@
 				element = this.element.find('input');
 			}
 			if (element){
-				element.change();
+				element.trigger('change.bs.datepicker');
 			}
 			if (this.o.autoclose && (!which || which === 'date')){
 				this.hide();
@@ -1224,7 +1243,7 @@
 					element = this.element.find('input');
 				}
 				if (element){
-					element.change();
+					element.trigger('change.bs.datepicker');
 				}
 			}
 		},
@@ -1598,9 +1617,9 @@
 		},
 		headTemplate: '<thead>'+
 							'<tr>'+
-								'<th class="prev">&laquo;</th>'+
+								'<th class="prev">&#171;</th>'+
 								'<th colspan="5" class="datepicker-switch"></th>'+
-								'<th class="next">&raquo;</th>'+
+								'<th class="next">&#187;</th>'+
 							'</tr>'+
 						'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
