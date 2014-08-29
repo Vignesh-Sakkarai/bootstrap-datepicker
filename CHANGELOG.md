@@ -1,6 +1,11 @@
 Changelog
 =========
 
+master
+----------
+
+* Fixed location of the calendar when using just a text input.
+
 1.3.0-11
 ----------
 
