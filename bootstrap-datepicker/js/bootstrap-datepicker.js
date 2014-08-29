@@ -574,8 +574,8 @@
 			var offset = this.component ? this.component.parent().offset() : this.element.offset();
 			var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(false);
 			var width = this.component ? this.component.outerWidth(true) : this.element.outerWidth(false);
-			var left = this.component ? this.component.parent().position().left : offset.left;
-			var top = this.component ? this.component.parent().position().top : offset.top;
+			var left = this.component ? this.component.parent().position().left : this.element.position().left;
+			var top = this.component ? this.component.parent().position().top : this.element.position().top;
 
 			this.picker.removeClass(
 				'datepicker-orient-top datepicker-orient-bottom '+
