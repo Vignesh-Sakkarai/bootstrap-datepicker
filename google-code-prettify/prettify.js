@@ -852,7 +852,18 @@ var prettyPrint;
       fallthroughStylePatterns.push(
           [PR_COMMENT, /^\/\*[\s\S]*?(?:\*\/|$)/, null]);
     }
-    if (options['regexLiterals']) {
+    var regexLiterals = options['regexLiterals'];
+    if (regexLiterals) {
+      /**
+       * @const
+       */
+      var regexExcls = regexLiterals > 1
+        ? ''  // Multiline regex literals
+        : '\n\r';
+      /**
+       * @const
+       */
+      var regexAny = regexExcls ? '.' : '[\\S\\s]';
       /**
        * @const
        */
@@ -860,18 +871,19 @@ var prettyPrint;
           // A regular expression literal starts with a slash that is
           // not followed by * or / so that it is not confused with
           // comments.
-          '/(?=[^/*])'
+          '/(?=[^/*' + regexExcls + '])'
           // and then contains any number of raw characters,
-          + '(?:[^/\\x5B\\x5C]'
+          + '(?:[^/\\x5B\\x5C' + regexExcls + ']'
           // escape sequences (\x5C),
-          +    '|\\x5C[\\s\\S]'
+          +    '|\\x5C' + regexAny
           // or non-nesting character sets (\x5B\x5D);
-          +    '|\\x5B(?:[^\\x5C\\x5D]|\\x5C[\\s\\S])*(?:\\x5D|$))+'
+          +    '|\\x5B(?:[^\\x5C\\x5D' + regexExcls + ']'
+          +             '|\\x5C' + regexAny + ')*(?:\\x5D|$))+'
           // finally closed by a /.
           + '/');
       fallthroughStylePatterns.push(
           ['lang-regex',
-           new RegExp('^' + REGEXP_PRECEDER_PATTERN + '(' + REGEX_LITERAL + ')')
+           RegExp('^' + REGEXP_PRECEDER_PATTERN + '(' + REGEX_LITERAL + ')')
            ]);
     }
 
@@ -926,7 +938,10 @@ var prettyPrint;
       // If that does turn out to be a problem, we should change the below
       // when hc is truthy to include # in the run of punctuation characters
       // only when not followint [|&;<>].
-      /^.[^\s\w\.$@\'\"\`\/\\]*/;
+      '^.[^\\s\\w.$@\'"`/\\\\]*';
+    if (options['regexLiterals']) {
+      punctuation += '(?!\s*\/)';
+    }
 
     fallthroughStylePatterns.push(
         // TODO(mikesamuel): recognize non-latin letters and numerals in idents
@@ -946,9 +961,10 @@ var prettyPrint;
              // with an optional modifier like UL for unsigned long
              + '[a-z]*', 'i'),
          null, '0123456789'],
-        // Don't treat escaped quotes in bash as starting strings.  See issue 144.
+        // Don't treat escaped quotes in bash as starting strings.
+        // See issue 144.
         [PR_PLAIN,       /^\\[\s\S]?/, null],
-        [PR_PUNCTUATION, punctuation, null]);
+        [PR_PUNCTUATION, new RegExp(punctuation), null]);
 
     return createSimpleLexer(shortcutStylePatterns, fallthroughStylePatterns);
   }
@@ -1099,6 +1115,7 @@ var prettyPrint;
    * {@code job.decorations} and modifies {@code job.sourceNode} in place.
    * @param {Object} job like <pre>{
    *    sourceCode: {string} source as plain text,
+   *    sourceNode: {HTMLElement} the element containing the source,
    *    spans: {Array.<number|Node>} alternating span start indices into source
    *       and the text node or element (e.g. {@code <BR>}) corresponding to that
    *       span.
@@ -1331,7 +1348,7 @@ var prettyPrint;
           'keywords': PERL_KEYWORDS,
           'hashComments': true,
           'multiLineStrings': true,
-          'regexLiterals': true
+          'regexLiterals': 2  // multiline regex literals
         }), ['perl', 'pl', 'pm']);
   registerLangHandler(sourceDecorator({
           'keywords': RUBY_KEYWORDS,
@@ -1380,7 +1397,7 @@ var prettyPrint;
       recombineTagsAndDecorations(job);
     } catch (e) {
       if (win['console']) {
-        console['log'](e && e['stack'] ? e['stack'] : e);
+        console['log'](e && e['stack'] || e);
       }
     }
   }
@@ -1457,6 +1474,7 @@ var prettyPrint;
     var preformattedTagNameRe = /pre|xmp/i;
     var codeRe = /^code$/i;
     var preCodeXmpRe = /^(?:pre|code|xmp)$/i;
+    var EMPTY = {};
 
     function doWork() {
       var endTime = (win['PR_SHOULD_USE_CONTINUATION'] ?
@@ -1464,8 +1482,34 @@ var prettyPrint;
                      Infinity);
       for (; k < elements.length && clock['now']() < endTime; k++) {
         var cs = elements[k];
+
+        // Look for a preceding comment like
+        // <?prettify lang="..." linenums="..."?>
+        var attrs = EMPTY;
+        {
+          for (var preceder = cs; (preceder = preceder.previousSibling);) {
+            var nt = preceder.nodeType;
+            // <?foo?> is parsed by HTML 5 to a comment node (8)
+            // like <!--?foo?-->, but in XML is a processing instruction
+            var value = (nt === 7 || nt === 8) && preceder.nodeValue;
+            if (value
+                ? !/^\??prettify\b/.test(value)
+                : (nt !== 3 || /\S/.test(preceder.nodeValue))) {
+              // Skip over white-space text nodes but not others.
+              break;
+            }
+            if (value) {
+              attrs = {};
+              value.replace(
+                  /\b(\w+)=([\w:.%+-]+)/g,
+                function (_, name, value) { attrs[name] = value; });
+              break;
+            }
+          }
+        }
+
         var className = cs.className;
-        if (prettyPrintRe.test(className)
+        if ((attrs !== EMPTY || prettyPrintRe.test(className))
             // Don't redo this if we've already done it.
             // This allows recalling pretty print to just prettyprint elements
             // that have been added to the page since last call.
@@ -1494,15 +1538,18 @@ var prettyPrint;
             // HTML5 recommends that a language be specified using "language-"
             // as the prefix instead.  Google Code Prettify supports both.
             // http://dev.w3.org/html5/spec-author-view/the-code-element.html
-            var langExtension = className.match(langExtensionRe);
-            // Support <pre class="prettyprint"><code class="language-c">
-            var wrapper;
-            if (!langExtension && (wrapper = childContentWrapper(cs))
-                && codeRe.test(wrapper.tagName)) {
-              langExtension = wrapper.className.match(langExtensionRe);
-            }
+            var langExtension = attrs['lang'];
+            if (!langExtension) {
+              langExtension = className.match(langExtensionRe);
+              // Support <pre class="prettyprint"><code class="language-c">
+              var wrapper;
+              if (!langExtension && (wrapper = childContentWrapper(cs))
+                  && codeRe.test(wrapper.tagName)) {
+                langExtension = wrapper.className.match(langExtensionRe);
+              }
 
-            if (langExtension) { langExtension = langExtension[1]; }
+              if (langExtension) { langExtension = langExtension[1]; }
+            }
 
             var preformatted;
             if (preformattedTagNameRe.test(cs.tagName)) {
@@ -1524,10 +1571,15 @@ var prettyPrint;
 
             // Look for a class like linenums or linenums:<n> where <n> is the
             // 1-indexed number of the first line.
-            var lineNums = cs.className.match(/\blinenums\b(?::(\d+))?/);
-            lineNums = lineNums
-                ? lineNums[1] && lineNums[1].length ? +lineNums[1] : true
+            var lineNums = attrs['linenums'];
+            if (!(lineNums = lineNums === 'true' || +lineNums)) {
+              lineNums = className.match(/\blinenums\b(?::(\d+))?/);
+              lineNums =
+                lineNums
+                ? lineNums[1] && lineNums[1].length
+                  ? +lineNums[1] : true
                 : false;
+            }
             if (lineNums) { numberLines(cs, lineNums, preformatted); }
 
             // do the pretty printing
