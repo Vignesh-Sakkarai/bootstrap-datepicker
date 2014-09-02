@@ -40,5 +40,5 @@ pre.prettyprint { padding: 2px; border: 1px solid #ccc }
 .prettyprint ol { background-color: #fff; }
 .prettyprint li { border-left: 1px solid #ccc; }
 /* Alternate shading for lines */
-.prettyprint ol li:nth-child(n) { background-color: #fafafa; }
-.prettyprint ol li:nth-child(2n) { background-color: #eaeaea; }
+.prettyprint ol li:nth-child(odd) { background-color: #fafafa; }
+.prettyprint ol li:nth-child(even) { background-color: #eaeaea; }
