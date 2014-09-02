@@ -88,9 +88,9 @@
     <div class="container">
 
       <nav class="navbar navbar-inverse" role="navigation">
-        <div class="container-fluid">
+        <div class="container-fluid navbar-inner">
           <div class="navbar-header">
-            <a class="navbar-brand" href="https://vizjerai.github.io/bootstrap-datepicker">bootstrap-datepicker</a>
+            <a class="navbar-brand brand" href="https://vizjerai.github.io/bootstrap-datepicker">bootstrap-datepicker</a>
           </div>
 
           <ul class="nav navbar-nav">
@@ -114,12 +114,12 @@
         <div class="well">
 
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 span12">
               <label class="control-label">Type:</label>
             </div>
           </div>
 
-          <label for="markup-text" class="radio-inline">
+          <label for="markup-text" class="radio-inline radio inline">
             <input name="markup" id="markup-text" value="input" type="radio" checked>
             Text input
             <script type="text/html" class="html" data-version="2">
@@ -132,7 +132,7 @@
               input
             </script>
           </label>
-          <label for="markup-component" class="radio-inline">
+          <label for="markup-component" class="radio-inline radio inline">
             <input name="markup" id="markup-component" value="component" type="radio">
             Component
             <script type="text/html" class="html" data-version="2">
@@ -152,7 +152,7 @@
               .input-group.date
             </script>
           </label>
-          <label for="markup-inline" class="radio-inline">
+          <label for="markup-inline" class="radio-inline radio inline">
             <input name="markup" id="markup-inline" value="embedded" type="radio">
             Embedded / inline
             <script type="text/html" class="html" data-version="*">
@@ -162,7 +162,7 @@
               div
             </script>
           </label>
-          <label for="markup-range" class="radio-inline">
+          <label for="markup-range" class="radio-inline radio inline">
             <input name="markup" id="markup-range" value="range" type="radio">
             Range
             <script type="text/html" class="html" data-version="2">
@@ -187,24 +187,24 @@
           <p></p>
           <p>Options:</p>
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="format" class="control-label">Format</label>
               <input class="form-control" id="format" name="format" type="text" placeholder="mm/dd/yyyy">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="weekStart" class="control-label">Week start</label>
               <input class="form-control" id="weekStart" name="weekStart" type="text" placeholder="0">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="startDate" class="control-label">Start date</label>
               <input class="form-control" id="startDate" name="startDate" type="text" placeholder="-Infinity">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="endDate" class="control-label">End date</label>
               <input class="form-control" id="endDate" name="endDate" type="text" placeholder="+Infinity">
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="startView" class="control-label">Start view</label>
               <select class="form-control" id="startView" name="startView">
                 <option value="0">0 / month</option>
@@ -212,7 +212,7 @@
                 <option value="2">2 / decade</option>
               </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="minViewMode" class="control-label">Min view mode</label>
               <select class="form-control" id="minViewMode" name="minViewMode">
                 <option value="0">0 / days</option>
@@ -223,7 +223,7 @@
           </div>
 
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="todayBtn" class="control-label">Today button</label>
               <select class="form-control" id="todayBtn" name="todayBtn">
                 <option value="false">disabled</option>
@@ -231,7 +231,7 @@
                 <option value="linked">linked</option>
               </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="language" class="control-label">Language</label>
               <select class="form-control" id="language" name="language">
                 <option value="en">en</option>
@@ -246,7 +246,7 @@
               </script>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="orientation" class="control-label">Orientation</label>
               <select class="form-control" id="orientation" name="orientation">
                 <option value="auto">auto</option>
@@ -263,57 +263,57 @@
           </div>
 
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="multidate" class="control-label">Multidate</label>
               <input type="text" class="form-control" id="multidate" name="multidate" placeholder="false" title="false, true, or a number">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 span3">
               <label for="multidateSeparator" class="control-label">Multidate separator</label>
               <input type="text" class="form-control" id="multidateSeparator" name="multidateSeparator" placeholder=",">
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 span12">
               <label class="control-label">Days of week disabled:</label>
             </div>
-            <div class="col-md-12">
-              <label class="checkbox-inline"><input type="checkbox" name="daysOfWeekDisabled" value="0"> 0</label>
-              <label class="checkbox-inline"><input type="checkbox" name="daysOfWeekDisabled" value="1"> 1</label>
-              <label class="checkbox-inline"><input type="checkbox" name="daysOfWeekDisabled" value="2"> 2</label>
-              <label class="checkbox-inline"><input type="checkbox" name="daysOfWeekDisabled" value="3"> 3</label>
-              <label class="checkbox-inline"><input type="checkbox" name="daysOfWeekDisabled" value="4"> 4</label>
-              <label class="checkbox-inline"><input type="checkbox" name="daysOfWeekDisabled" value="5"> 5</label>
-              <label class="checkbox-inline"><input type="checkbox" name="daysOfWeekDisabled" value="6"> 6</label>
+            <div class="col-md-12 span12">
+              <label class="checkbox-inline checkbox inline"><input type="checkbox" name="daysOfWeekDisabled" value="0"> 0</label>
+              <label class="checkbox-inline checkbox inline"><input type="checkbox" name="daysOfWeekDisabled" value="1"> 1</label>
+              <label class="checkbox-inline checkbox inline"><input type="checkbox" name="daysOfWeekDisabled" value="2"> 2</label>
+              <label class="checkbox-inline checkbox inline"><input type="checkbox" name="daysOfWeekDisabled" value="3"> 3</label>
+              <label class="checkbox-inline checkbox inline"><input type="checkbox" name="daysOfWeekDisabled" value="4"> 4</label>
+              <label class="checkbox-inline checkbox inline"><input type="checkbox" name="daysOfWeekDisabled" value="5"> 5</label>
+              <label class="checkbox-inline checkbox inline"><input type="checkbox" name="daysOfWeekDisabled" value="6"> 6</label>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 span12">
               <label class="control-label">Additional Options:</label>
             </div>
-            <div class="col-md-12">
-              <label for="calendarWeeks" class="checkbox-inline">
+            <div class="col-md-12 span12">
+              <label for="calendarWeeks" class="checkbox-inline checkbox inline">
                 <input id="calendarWeeks" name="calendarWeeks" type="checkbox">
                 Calendar weeks
               </label>
-              <label for="autoclose" class="checkbox-inline">
+              <label for="autoclose" class="checkbox-inline checkbox inline">
                 <input id="autoclose" name="autoclose" type="checkbox">
                 Autoclose
               </label>
-              <label for="todayHighlight" class="checkbox-inline">
+              <label for="todayHighlight" class="checkbox-inline checkbox inline">
                 <input id="todayHighlight" name="todayHighlight" type="checkbox">
                 Today highlight
               </label>
-              <label for="keyboardNavigation" class="checkbox-inline">
+              <label for="keyboardNavigation" class="checkbox-inline checkbox inline">
                 <input id="keyboardNavigation" name="keyboardNavigation" type="checkbox" checked>
                 Keyboard navigation
               </label>
-              <label for="forceParse" class="checkbox-inline">
+              <label for="forceParse" class="checkbox-inline checkbox inline">
                 <input id="forceParse" name="forceParse" type="checkbox" checked>
                 Force parse
               </label>
-              <label for="beforeShowDay" class="checkbox-inline">
+              <label for="beforeShowDay" class="checkbox-inline checkbox inline">
                 <input id="beforeShowDay" name="beforeShowDay" type="checkbox">
                 Before-show-day callback
               </label>
@@ -323,7 +323,7 @@
           <br>
 
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 span12">
               <button class="btn btn-warning" type="button" id="ch_bs"></button>
               <button class="btn btn-danger" type="reset">Reset to defaults</button>
             </div>
