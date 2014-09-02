@@ -386,19 +386,20 @@
               val = values[opt];
               if (opt == 'daysOfWeekDisabled') val = '"'+val+'"'
               else if (opt == 'beforeShowDay') val = function(date){
-    if (date.getMonth() == (new Date()).getMonth())
-      switch (date.getDate()){
-        case 4:
-          return {
-            tooltip: 'Example tooltip',
-            classes: 'active'
-          };
-        case 8:
-          return false;
-        case 12:
-          return "green";
-      }
-  }
+                if (date.getMonth() == (new Date()).getMonth()) {
+                  switch (date.getDate()){
+                    case 4:
+                      return {
+                        tooltip: 'Example tooltip',
+                        classes: 'active'
+                      };
+                    case 8:
+                      return false;
+                    case 12:
+                      return "green";
+                  }
+                }
+              }
               else if (val == 'on' || val == 'true') val = 'true';
               else if (val === void 0 || val == 'false') val = 'false';
               else if (parseInt(val) == val) val = val;
@@ -412,18 +413,16 @@
 
           return [html, js];
         }
-        function update_code(){
-          var code = build_code(),
-              html = code[0],
+        function update_code(code){
+          var html = code[0],
               js = code[1];
 
           var print_html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;')
           $('#sandbox-html').html(prettyPrintOne(print_html, 'html', true));
           $('#sandbox-js').html(prettyPrintOne(js, 'js', true));
         }
-        function update_sandbox(){
-          var code = build_code(),
-              html = code[0],
+        function update_sandbox(code){
+          var html = code[0],
               js = code[1];
 
           $('#sandbox-container > :first-child').datepicker('remove');
@@ -437,26 +436,28 @@
           }
         }
         function update_all(){
-          update_code();
-          update_sandbox();
+          var code = build_code();
+          update_code(code);
+          update_sandbox(code);
           update_url();
         }
 
         $('.sandbox-form')
           .submit(function(){ return false; })
-          .keydown(update_all)
-          .keyup(update_all)
+          .keypress(update_all)
           .click(function(e){
-            update_code();
-            update_sandbox();
+            var code = build_code();
+            update_code(code);
+            update_sandbox(code);
             if (!$(e.target).is('button[type=reset]'))
               update_url();
           });
 
         $('.sandbox-form button[type=reset]').click(function(){
           $('.sandbox-form')[0].reset();
-          update_code();
-          update_sandbox();
+          var code = build_code();
+          update_code(code);
+          update_sandbox(code);
           history.replaceState && history.replaceState(null, null, '?#sandbox');
         });
 
@@ -466,8 +467,6 @@
         $('#ch_bs').click(function(){
           swap_bs();
         });
-
-        $(page).on('change:bootstrap', update_all);
 
         setTimeout(function(){
           // Load form state from url if possible
@@ -508,8 +507,9 @@
           }
 
           // Don't replaceState the url on pageload
-          update_code();
-          update_sandbox();
+          var code = build_code();
+          update_code(code);
+          update_sandbox(code);
         }, 300);
 
         // Analytics event tracking
