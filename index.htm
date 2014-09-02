@@ -443,23 +443,26 @@
         }
 
         $('.sandbox-form')
-          .submit(function(){ return false; })
-          .keypress(update_all)
-          .click(function(e){
+          .delegate('button', 'click', function(e){
+            if ($(e.currentTarget).is('button[type=reset]')) {
+              $('.sandbox-form')[0].reset();
+              var code = build_code();
+              update_code(code);
+              update_sandbox(code);
+              history.replaceState && history.replaceState(null, null, '?#sandbox');
+            } else {
+              var code = build_code();
+              update_code(code);
+              update_sandbox(code);
+              update_url();
+            }
+          })
+          .delegate('select, input', 'change', function(e){
             var code = build_code();
             update_code(code);
             update_sandbox(code);
-            if (!$(e.target).is('button[type=reset]'))
-              update_url();
+            update_url();
           });
-
-        $('.sandbox-form button[type=reset]').click(function(){
-          $('.sandbox-form')[0].reset();
-          var code = build_code();
-          update_code(code);
-          update_sandbox(code);
-          history.replaceState && history.replaceState(null, null, '?#sandbox');
-        });
 
         $(page).on('change:bootstrap', function(e, version){
           $('#ch_bs').text('Switch to Bootstrap ' + (5-version));
